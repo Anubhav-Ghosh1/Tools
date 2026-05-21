@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: #0a0a0b;
+  color: #e7e7e9;
+}
+
+.tool-card {
+  @apply block rounded-lg border border-neutral-800 bg-neutral-900/60 p-4 hover:border-neutral-600 hover:bg-neutral-900 transition;
+}
+
+.btn {
+  @apply inline-flex items-center gap-2 rounded-md border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-sm hover:bg-neutral-700 transition disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-primary {
+  @apply inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-500 transition disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.field {
+  @apply w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm font-mono outline-none focus:border-emerald-500;
+}
+
+.label {
+  @apply mb-1 block text-xs uppercase tracking-wide text-neutral-400;
+}
+
+textarea.field {
+  @apply font-mono leading-relaxed;
+  min-height: 8rem;
+}
+
+.chip {
+  @apply inline-flex items-center rounded-full border border-neutral-700 bg-neutral-900 px-2 py-0.5 text-[10px] uppercase tracking-wider text-neutral-400;
+}
+
+.err {
+  @apply rounded-md border border-red-700/60 bg-red-950/40 px-3 py-2 text-sm text-red-300;
+}
+
+.ok {
+  @apply rounded-md border border-emerald-700/60 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-300;
+}
