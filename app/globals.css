@@ -2,48 +2,327 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens ─────────────────────────────── */
 :root {
   color-scheme: dark;
+
+  --bg:          #09090b;
+  --bg-paper:    #111113;
+  --bg-raise:    #18181b;
+  --bg-hover:    rgba(24,24,27,0.8);
+  --border:      #27272a;
+  --border-sm:   rgba(39,39,42,0.6);
+  --fg:          #e4e4e7;
+  --fg-muted:    #a1a1aa;
+  --fg-subtle:   #71717a;
+  --fg-faint:    #52525b;
+  --accent:      #10b981;
+  --accent-dim:  rgba(16,185,129,0.15);
 }
 
+html.light {
+  color-scheme: light;
+
+  --bg:          #f4f4f5;
+  --bg-paper:    #ffffff;
+  --bg-raise:    #fafafa;
+  --bg-hover:    rgba(244,244,245,0.9);
+  --border:      #d4d4d8;
+  --border-sm:   rgba(212,212,216,0.7);
+  --fg:          #09090b;
+  --fg-muted:    #52525b;
+  --fg-subtle:   #71717a;
+  --fg-faint:    #a1a1aa;
+  --accent:      #059669;
+  --accent-dim:  rgba(5,150,105,0.1);
+}
+
+/* ── Base ───────────────────────────────────────── */
 html, body {
-  background: #0a0a0b;
-  color: #e7e7e9;
+  background: var(--bg);
+  color: var(--fg);
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(128,128,128,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ── Component classes ─────────────────────────── */
 .tool-card {
-  @apply block rounded-lg border border-neutral-800 bg-neutral-900/60 p-4 hover:border-neutral-600 hover:bg-neutral-900 transition;
+  display: block;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg-paper);
+  padding: 1rem;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.tool-card:hover {
+  border-color: var(--fg-faint);
+  background: var(--bg-raise);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
 }
 
 .btn {
-  @apply inline-flex items-center gap-2 rounded-md border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-sm hover:bg-neutral-700 transition disabled:opacity-50 disabled:pointer-events-none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--border);
+  background: var(--bg-raise);
+  color: var(--fg-muted);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  cursor: pointer;
 }
+.btn:hover { background: var(--bg-hover); border-color: var(--fg-faint); color: var(--fg); }
+.btn:disabled { opacity: 0.4; pointer-events: none; }
 
 .btn-primary {
-  @apply inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-500 transition disabled:opacity-50 disabled:pointer-events-none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.375rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: opacity 0.12s;
+  cursor: pointer;
 }
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.4; pointer-events: none; }
 
 .field {
-  @apply w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm font-mono outline-none focus:border-emerald-500;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg-paper);
+  color: var(--fg);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
 }
-
-.label {
-  @apply mb-1 block text-xs uppercase tracking-wide text-neutral-400;
+.field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
 textarea.field {
-  @apply font-mono leading-relaxed;
+  line-height: 1.6;
   min-height: 8rem;
+  resize: vertical;
+}
+select.field { cursor: pointer; }
+
+.label {
+  padding-bottom: 0.375rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-subtle);
+  font-weight: 500;
+  min-height: 1.75rem;
 }
 
 .chip {
-  @apply inline-flex items-center rounded-full border border-neutral-700 bg-neutral-900 px-2 py-0.5 text-[10px] uppercase tracking-wider text-neutral-400;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--bg-raise);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
 }
 
 .err {
-  @apply rounded-md border border-red-700/60 bg-red-950/40 px-3 py-2 text-sm text-red-300;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(239,68,68,0.4);
+  background: rgba(127,29,29,0.2);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #fca5a5;
+}
+html.light .err {
+  background: rgba(254,226,226,0.8);
+  color: #b91c1c;
+  border-color: rgba(239,68,68,0.3);
 }
 
 .ok {
-  @apply rounded-md border border-emerald-700/60 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-300;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(16,185,129,0.3);
+  background: rgba(6,78,59,0.2);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #6ee7b7;
 }
+html.light .ok {
+  background: rgba(209,250,229,0.8);
+  color: #065f46;
+  border-color: rgba(16,185,129,0.3);
+}
+
+.panel {
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg-raise);
+  padding: 1rem;
+}
+
+/* Category filter pills */
+.pill-idle {
+  border-color: var(--border);
+  color: var(--fg-subtle);
+  background: transparent;
+}
+.pill-idle:hover {
+  border-color: var(--fg-faint);
+  color: var(--fg-muted);
+}
+/* Dark mode active: white text on dark bg */
+.pill-active {
+  background: #18181b;
+  border-color: #18181b;
+  color: #ffffff;
+}
+/* Light mode active: near-black bg + white text */
+html.light .pill-active {
+  background: #18181b;
+  border-color: #18181b;
+  color: #ffffff;
+}
+
+/* ── Checkerboard for transparent image previews ── */
+.bg-checkerboard {
+  background-color: #e0e0e0;
+  background-image:
+    linear-gradient(45deg, #bbb 25%, transparent 25%),
+    linear-gradient(-45deg, #bbb 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #bbb 75%),
+    linear-gradient(-45deg, transparent 75%, #bbb 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+}
+html.light .bg-checkerboard { background-color: #e8e8e8; }
+
+/* ── Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fg-faint); }
+
+/* ── Page transition ────────────────────────────── */
+main { animation: fadeUp 0.12s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Light mode: Tailwind overrides ────────────────
+   Remap dark neutrals + emerald darks to light equivalents.
+   Inline Tailwind classes work without touching JSX.
+──────────────────────────────────────────────────── */
+
+/* Neutral backgrounds */
+html.light .bg-neutral-950,
+html.light .bg-neutral-950\/90 { background-color: rgba(255,255,255,0.95) !important; }
+html.light .bg-neutral-950\/40 { background-color: rgba(250,250,250,0.4)  !important; }
+html.light .bg-neutral-950\/30 { background-color: rgba(250,250,250,0.3)  !important; }
+html.light .bg-neutral-900\/80 { background-color: rgba(244,244,245,0.8)  !important; }
+html.light .bg-neutral-900\/60 { background-color: rgba(244,244,245,0.6)  !important; }
+html.light .bg-neutral-900\/50 { background-color: rgba(244,244,245,0.5)  !important; }
+html.light .bg-neutral-900\/40 { background-color: rgba(244,244,245,0.4)  !important; }
+html.light .bg-neutral-900\/30 { background-color: rgba(244,244,245,0.3)  !important; }
+html.light .bg-neutral-900     { background-color: #f4f4f5 !important; }
+html.light .bg-neutral-800\/80 { background-color: rgba(228,228,231,0.8)  !important; }
+html.light .bg-neutral-800\/60 { background-color: rgba(228,228,231,0.6)  !important; }
+html.light .bg-neutral-800     { background-color: #e4e4e7 !important; }
+html.light .bg-neutral-700     { background-color: #d4d4d8 !important; }
+html.light .bg-black\/70,
+html.light .bg-black\/60       { background-color: rgba(0,0,0,0.35)       !important; }
+
+/* Focus bg states (KV table inputs) */
+html.light .focus\:bg-neutral-900:focus { background-color: #ececee !important; }
+
+/* Emerald badge / accent surfaces */
+html.light .bg-emerald-950\/20,
+html.light .bg-emerald-950\/30  { background-color: rgba(209,250,229,0.5)  !important; }
+html.light .bg-emerald-950\/40  { background-color: rgba(209,250,229,0.6)  !important; }
+
+/* "New" badge: solid emerald-50 bg + emerald-800 text = 6.5:1 contrast */
+html.light .bg-emerald-900\/50  { background-color: #dcfce7 !important; }
+html.light .border-emerald-800\/50 { border-color: #6ee7b7 !important; }
+html.light .border-emerald-800\/40 { border-color: rgba(110,231,183,0.7) !important; }
+
+html.light .bg-emerald-700      { background-color: #059669 !important; }
+html.light .bg-emerald-600\/20  { background-color: rgba(5,150,105,0.12)   !important; }
+html.light .bg-emerald-600      { background-color: #059669 !important; }
+html.light .border-emerald-700\/60 { border-color: rgba(5,150,105,0.4)     !important; }
+html.light .border-emerald-700\/50,
+html.light .border-emerald-700\/40 { border-color: rgba(5,150,105,0.3)     !important; }
+html.light .border-emerald-700\/30 { border-color: rgba(5,150,105,0.25)    !important; }
+
+/* emerald-400 text → emerald-800 in light: strong green, passes AA+ */
+html.light .text-emerald-400    { color: #166534 !important; }
+html.light .text-emerald-300    { color: #065f46 !important; }
+
+/* Red/purple/blue/yellow status colors — keep readable on light bg */
+html.light .bg-red-950\/30     { background-color: rgba(254,226,226,0.5)  !important; }
+html.light .bg-purple-950\/30  { background-color: rgba(243,232,255,0.5)  !important; }
+html.light .bg-blue-950\/30    { background-color: rgba(219,234,254,0.5)  !important; }
+html.light .bg-yellow-950\/30  { background-color: rgba(254,252,232,0.5)  !important; }
+html.light .bg-orange-950\/20  { background-color: rgba(255,237,213,0.5)  !important; }
+html.light .text-red-300       { color: #b91c1c !important; }
+html.light .text-red-400       { color: #dc2626 !important; }
+html.light .text-purple-300    { color: #7c3aed !important; }
+html.light .text-blue-400      { color: #1d4ed8 !important; }
+html.light .text-yellow-400    { color: #b45309 !important; }
+html.light .text-orange-400    { color: #c2410c !important; }
+html.light .text-cyan-400      { color: #0e7490 !important; }
+
+/* Neutral borders */
+html.light .border-neutral-800\/60 { border-color: rgba(212,212,216,0.6)  !important; }
+html.light .border-neutral-800\/50 { border-color: rgba(212,212,216,0.5)  !important; }
+html.light .border-neutral-800\/40 { border-color: rgba(212,212,216,0.4)  !important; }
+html.light .border-neutral-800     { border-color: #d4d4d8 !important; }
+html.light .border-neutral-700     { border-color: #a1a1aa !important; }
+html.light .border-neutral-600     { border-color: #71717a !important; }
+html.light .divide-neutral-800\/60 > * + * { border-color: rgba(212,212,216,0.6) !important; }
+
+/* Neutral text */
+html.light .text-neutral-700 { color: #3f3f46 !important; }
+html.light .text-neutral-600 { color: #52525b !important; }
+html.light .text-neutral-500 { color: #71717a !important; }
+html.light .text-neutral-400 { color: #52525b !important; }
+html.light .text-neutral-300 { color: #27272a !important; }
+html.light .text-neutral-200 { color: #18181b !important; }
+html.light body,
+html.light .text-white        { color: #09090b !important; }
+
+/* Header — fully opaque, clean border, subtle shadow, no ghost */
+html.light header {
+  background-color: #ffffff !important;
+  border-color:     #e4e4e7 !important;
+  box-shadow:       0 1px 0 #e4e4e7, 0 2px 8px rgba(0,0,0,0.04);
+  backdrop-filter:  none;
+}
+
+/* Footer */
+html.light footer { border-color: #e4e4e7 !important; }
